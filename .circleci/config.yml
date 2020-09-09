@@ -20,6 +20,7 @@ jobs:
       - image: cimg/node:14.0.0
     steps:
       - checkout
+      - aws-cli/setup
       - setup_remote_docker:
           #available on performance plan
           docker_layer_caching: true
@@ -30,8 +31,6 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t your-image:$TAG .
-      - aws-cli/setup:
-          aws-region: ap-northeast-2 
       # - run:
       #     name: Login to AWS aws-ecr
       #     command: |
