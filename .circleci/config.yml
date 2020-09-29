@@ -31,10 +31,14 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t your-image:$TAG .
-      # - run:
-      #     name: Login to AWS aws-ecr
-      #     command: |
-
+      - run:
+          name: Login to AWS aws-ecr
+          command: |
+            aws ecr get-login-password \
+            --region ap-northeast-2 \
+            | docker login \
+            --username AWS \
+            --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
 
 
 orbs:
