@@ -42,7 +42,7 @@ jobs:
             --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
       - run:
           name: Push image to AWS aws-ecr
-          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/cci-orb-ecr-ecs-demo
+          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/cci-orb-ecr-ecs-demo your-image:$TAG
 
 
 orbs:
