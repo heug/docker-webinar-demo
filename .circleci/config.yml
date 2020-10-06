@@ -16,7 +16,7 @@ workflows:
       - build_docker_image
 
 jobs:
-  build_docker_image:
+  build_docker_image: 
     docker:
       - image: cimg/node:14.0.0
     steps:
@@ -40,9 +40,10 @@ jobs:
             | docker login \
             --username AWS \
             --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
+      - run: docker images
       - run:
           name: Push image to AWS aws-ecr
-          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/cci-orb-ecr-ecs-demo your-image:$TAG
+          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/cci-orb-ecr-ecs-demo 
 
 
 orbs:
