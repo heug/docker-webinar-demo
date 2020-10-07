@@ -43,7 +43,7 @@ jobs:
       - run: docker images
       - run:
           name: Push image to AWS aws-ecr
-          command: docker push your-image:$TAG 
+          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/your-image:$TAG 
 
 
 orbs:
