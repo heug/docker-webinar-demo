@@ -41,9 +41,10 @@ jobs:
             --username AWS \
             --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
       - run: docker images
+      - run: echo $TAG
       - run:
           name: Push image to AWS aws-ecr
-          command: docker push 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com/your-image:$TAG 
+          command: docker push your-image:$TAG 
 
 
 orbs:
