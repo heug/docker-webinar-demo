@@ -14,9 +14,22 @@ workflows:
       #     requires:
       #       - node/test
       # - build_docker_image
-      - build_and_push_image
+      # - build_and_push_image
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          context: myContext
+          create-repo: true
+          no-output-timeout: 20m
+          # profile-name: myProfileName
+          region: AWS_DEFAULT_REGION
+          repo: cci-orb-ecr-ecs-demo
+          skip-when-tags-exist: false
+          tag: 'latest'
 
-jobs:
+
+# jobs:
   # build_docker_image: 
   #   docker:
   #     - image: cimg/node:14.0.0
@@ -46,8 +59,8 @@ jobs:
       # - run:
       #     name: Push image to AWS aws-ecr
       #     command: docker push your-image:$TAG 
-  build_and_push_image:
-    jobs:
+  # build_and_push_image:
+  #   jobs:
       # - checkout
       # - aws-cli/setup
       # - setup_remote_docker:
@@ -56,18 +69,18 @@ jobs:
       # - run: 
       #     name: Set up tag 
       #     command: echo "export TAG=0.1.$CIRCLE_SHA1" >> $BASH_ENV
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ECR_ACCOUNT_URL
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          context: myContext
-          create-repo: true
-          no-output-timeout: 20m
-          # profile-name: myProfileName
-          region: AWS_DEFAULT_REGION
-          repo: cci-orb-ecr-ecs-demo
-          skip-when-tags-exist: false
-          tag: 'latest'
+      # - aws-ecr/build-and-push-image:
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     context: myContext
+      #     create-repo: true
+      #     no-output-timeout: 20m
+      #     # profile-name: myProfileName
+      #     region: AWS_DEFAULT_REGION
+      #     repo: cci-orb-ecr-ecs-demo
+      #     skip-when-tags-exist: false
+      #     tag: 'latest'
 
 orbs:
   node: circleci/node@4.0.0
