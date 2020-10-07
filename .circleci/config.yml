@@ -48,14 +48,14 @@ jobs:
       #     command: docker push your-image:$TAG 
   build_and_push_image:
     jobs:
-      - checkout
-      - aws-cli/setup
-      - setup_remote_docker:
-          #available on performance plan
-          docker_layer_caching: true
-      - run: 
-          name: Set up tag 
-          command: echo "export TAG=0.1.$CIRCLE_SHA1" >> $BASH_ENV
+      # - checkout
+      # - aws-cli/setup
+      # - setup_remote_docker:
+      #     #available on performance plan
+      #     docker_layer_caching: true
+      # - run: 
+      #     name: Set up tag 
+      #     command: echo "export TAG=0.1.$CIRCLE_SHA1" >> $BASH_ENV
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
