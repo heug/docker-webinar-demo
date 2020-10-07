@@ -13,13 +13,41 @@ workflows:
       # - build_docker_image:
       #     requires:
       #       - node/test
-      - build_docker_image
+      # - build_docker_image
+      - build_and_push_image
 
 jobs:
-  build_docker_image: 
-    docker:
-      - image: cimg/node:14.0.0
-    steps:
+  # build_docker_image: 
+  #   docker:
+  #     - image: cimg/node:14.0.0
+  #   steps:
+      # - checkout
+      # - aws-cli/setup
+      # - setup_remote_docker:
+      #     #available on performance plan
+      #     docker_layer_caching: true
+      # - run: 
+      #     name: Set up tag 
+      #     command: echo "export TAG=0.1.$CIRCLE_SHA1" >> $BASH_ENV
+      # - run: 
+      #     name: Build Docker image
+      #     command: |
+      #       docker build -t your-image:$TAG .
+      # - run:
+      #     name: Login to AWS aws-ecr
+      #     command: |
+      #       aws ecr get-login-password \
+      #       --region ap-northeast-2 \
+      #       | docker login \
+      #       --username AWS \
+      #       --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
+      # - run: docker images
+      # - run: echo $TAG
+      # - run:
+      #     name: Push image to AWS aws-ecr
+      #     command: docker push your-image:$TAG 
+  build_and_push_image:
+    jobs:
       - checkout
       - aws-cli/setup
       - setup_remote_docker:
@@ -28,24 +56,18 @@ jobs:
       - run: 
           name: Set up tag 
           command: echo "export TAG=0.1.$CIRCLE_SHA1" >> $BASH_ENV
-      - run: 
-          name: Build Docker image
-          command: |
-            docker build -t your-image:$TAG .
-      - run:
-          name: Login to AWS aws-ecr
-          command: |
-            aws ecr get-login-password \
-            --region ap-northeast-2 \
-            | docker login \
-            --username AWS \
-            --password-stdin 241099261431.dkr.ecr.ap-northeast-2.amazonaws.com
-      - run: docker images
-      - run: echo $TAG
-      - run:
-          name: Push image to AWS aws-ecr
-          command: docker push your-image:$TAG 
-
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          context: myContext
+          create-repo: true
+          no-output-timeout: 20m
+          # profile-name: myProfileName
+          region: AWS_DEFAULT_REGION
+          repo: cci-orb-ecr-ecs-demo
+          skip-when-tags-exist: false
+          tag: 'latest'
 
 orbs:
   node: circleci/node@4.0.0
